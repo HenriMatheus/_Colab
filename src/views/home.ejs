@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/index.css">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Emprestimos de componentes</h1>
+
+    
+
+    <form action="/searchComponent/<%= user %>" method="post">
+        <h1>Pesquisar emprestimo</h1>
+
+        <input type="text" name="componentName" placeholder="Nome do componente">
+        <button type="submit">Pesquisar</button>
+    </form>
+
+    <div>
+        <div>
+            <% for (let i in components) { %>
+                <h2><%= components[i].name_components %></h2>
+                
+                <div>
+                    <input type="checkbox" name="component" value="<%= components[i].name_components %>">
+                    
+                    <select id="spec<%= components[i].name_components %>">
+                        <% for (let j = 0; j < components[i].specification.length; j++) {%>
+                            <option value="<%= components[i].specification[j].power %>"><%= components[i].specification[j].power %> | <%= components[i].specification[j].amount %> unidades restantes</option>
+                        <% } %>
+                    </select>
+                    
+                    <input type="number" id="amount<%= components[i].name_components %>" placeholder="Unidades">
+                </div>
+            <% } %>
+        </div>
+
+        <button onclick="changeWindow(true)">Meus emprestimos</button>
+
+        <div id="loansWindow">
+            <button onclick="changeWindow(false)">x</button>
+            <% for (let i in myLoans) { %>
+                <div>
+                    <h3><%= myLoans[i].name_components %></h3>
+                    <p>Espeficação: <%= myLoans[i].specifications %></p>
+                    <p>Quantia: <%= myLoans[i].amount %></p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <button onclick="finalizar('<%= user %>', )">Solicitar componentes</button>
+
+    <script>
+        function finalizar(user) {
+            let items = []
+
+            document.getElementsByName("component").forEach((item) => {
+                if (item.checked === true) {
+                    let rqt = {
+                        registration: user,
+                        component: item.value, 
+                        spec: document.getElementById(`spec${item.value}`).value, 
+                        amount: Number(document.getElementById(`amount${item.value}`).value)
+                    }
+                    
+                    items.push(rqt)
+                }
+            })
+            
+            fetch("/requestComponents", {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(items)
+            })
+            .then((data) => {
+                if (data.ok) {
+                    location.reload()
+                }
+            })
+            .catch((err) => {
+                console.error(err)
+            })
+        }
+
+        function changeWindow(status) {
+            let loansWindow = document.getElementById("loansWindow")
+            
+            if (status) {
+                loansWindow.style.display = "block"
+                status = false
+            } else {
+                loansWindow.style.display = "none"
+                status = true
+            }
+
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atualizar componente</title>
+</head>
+<body>
+  <%- include("./partials/sideBar.ejs") %>
+
+  <h1>Atualizar componente</h1>
+
+  <p><%= flash %></p>
+
+  <form action="/updateComponent/newUpdate" method="post">
+    <input type="text" name="component" placeholder="Nome do componente a ser atualizado">
+    <input type="text" name="spec" placeholder="Potencia do componente a ser atualizado">
+
+    <div>
+      <h2>Novas especificações</h2>
+
+      <div>
+        <input type="text" name="newComponent" placeholder="Nome do componente">
+        <input type="text" name="newSpec" placeholder="Potencia">
+        <input type="number" name="newAmount" placeholder="Quantidade">
+      </div>
+    </div>
+    
+    <button type="submit">Atualizar</button>
+  </form>
+</body>
+</html>

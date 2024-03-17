@@ -1,0 +1,23 @@
+<style>
+  .sideBar {
+    display: none;
+  }
+</style>
+
+<div>
+  <button onclick="showSideBar()">☰</button>
+
+  <ul class="sideBar">
+    <li><a href="/loans">Gerenciar emprestimos de componentes</a></li>
+    <li><a href="/addComponent">Adicionar componentes</a></li>
+    <li><a href="/updateComponent">Atualizar dados de componentes</a></li>
+    <li><a href="/dellComponent">Remover componentes</a></li>
+  </ul>
+</div>
+
+<script>
+  function showSideBar() {
+    let sideBar = document.querySelector(".sideBar")
+    sideBar.style.display === "block" ? sideBar.style.display = "none" : sideBar.style.display = "block"
+  }
+</script>

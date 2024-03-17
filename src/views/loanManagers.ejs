@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LoanManarger</title>
+</head>
+<body>
+  <div>
+    <%- include("./partials/sideBar.ejs") %>
+    <h1>Confirmar devoluções</h1>
+  </div>
+  
+  <form action="/searchLoans" method="post">
+    <h1>Pesquisar emprestimo</h1>
+    <input type="number" name="registration" placeholder="Matricula">
+    <button type="submit">Pesquisar</button>
+  </form>
+
+  <div>
+    <button onclick="selectAll()">Selecionar tudo</button>
+  
+    <% for(let i in loans) {%>
+      <div>
+        <input type="checkbox" value="<%= loans[i].id %>">
+  
+        <ul>
+          <h2>Matricula: <%= loans[i].registration %></h2>
+          <li>Component: <%= loans[i].name_components %></li>
+          <li>Especificação: <%= loans[i].specifications %></li>
+          <li>Unidades: <%= loans[i].amount %> unidades</li>
+        </ul>
+      </div>
+
+      <hr>
+    <% } %>
+  
+    <button onclick="sendRequest()">Confirmar devolução</button>
+  </div>
+
+  <script>
+    function selectAll() {
+      document.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
+        checkbox.checked = true
+      })
+    }
+
+    function sendRequest() {
+      let items = []
+
+      document.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
+        if (checkbox.checked === true) {
+          items.push(checkbox.value)
+        }
+      })
+
+      fetch("/confirmReturns", {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(items)
+        })
+        .then((data) => {
+          if (data.ok) {
+            location.reload()
+          }
+        })
+        .catch((err) => {
+          console.error(err)
+      })
+    }
+  </script>
+</body>
+</html>

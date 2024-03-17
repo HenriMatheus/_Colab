@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adicionar componente</title>
+</head>
+<body>
+  <%- include("./partials/sideBar.ejs") %>
+
+  <h1>Adicionar componente</h1>
+
+  <p><%= flash %></p>
+
+  <form action="/addComponent/newComponent" method="post">
+    <div>
+      <input type="text" name="component" placeholder="Nome do componente">
+      <input type="text" name="spec" placeholder="Potencia">
+      <input type="number" name="amount" placeholder="Quantidade">
+    </div>
+    
+    <button type="submit">Adicionar</button>
+  </form>
+</body>
+</html>
